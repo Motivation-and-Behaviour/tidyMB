@@ -13,7 +13,7 @@ apa_style(tab, font = "times", title = "Table 1", subtitle = "Table Title")
 
 \item{title}{string A title  (e.g., Table 1).}
 
-\item{subtitle}{strong A subtitle (e.g., Descriptives).}
+\item{subtitle}{string A subtitle (e.g., Descriptives).}
 }
 \value{
 gt_tbl
@@ -27,5 +27,8 @@ An opinionated style to apply to tables that is APA 7th compliant.
 \item Titles should be enumerated e.g. Table 1
 \item Subtitles should be brief and in sentence case
 }
+}
+\examples{
+\dontrun{gt(iris) \%>\% apa_style()}
 }
 \keyword{style}

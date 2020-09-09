@@ -5,7 +5,7 @@
 #' @param tab gt_tbl A gt table to apply style to.
 #' @param font string A string with an installed font.
 #' @param title string A title  (e.g., Table 1).
-#' @param subtitle  strong A subtitle (e.g., Descriptives).
+#' @param subtitle  string A subtitle (e.g., Descriptives).
 #'
 #' @importFrom magrittr "%>%"
 #' @import gt
@@ -22,6 +22,7 @@
 #' @keywords style
 #'
 #' @examples
+#' \dontrun{gt(iris) %>% apa_style()}
 
 apa_style <- function(tab, font = "times",
                       title = "Table 1",
