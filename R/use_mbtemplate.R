@@ -12,10 +12,14 @@
 #' }
 #'
 #' @export
-use_tidytemplate <-
+use_mbtemplate <-
   function(name = NULL,
            open = interactive(),
            ...) {
+
+    if(is.null(name)){
+      name <- paste0(format(last_tt,"%Y_%m_%d"),"_MB_MS.Rmd")
+    }
 
     use_template("manuscript.Rmd",
                  save_as=name,
