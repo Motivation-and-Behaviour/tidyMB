@@ -37,4 +37,7 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+<<<<<<< HEAD
 .Rproj.user
+=======
+>>>>>>> 33230cbada7c8f9523eea8d83f056fb9d3fc4150
