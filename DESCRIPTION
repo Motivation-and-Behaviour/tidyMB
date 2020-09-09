@@ -18,4 +18,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Imports: 
     magrittr (>= 1.5),
-    gt (>= 0.2.2)
+    gt (>= 0.2.2),
+    usethis (>= 1.6.1)
