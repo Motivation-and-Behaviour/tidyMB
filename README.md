@@ -37,7 +37,7 @@ iris %>%
   head() %>%
   gt() %>%
   apa_style(title = 'Table 1', subtitle = "_Isis Database_") %>%
-  gtsave(filename = 'fig1.png',path = "fig", vwidth = 500, vheight = 600) 
+  gtsave(filename = 'fig1.png',path = "fig") 
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
