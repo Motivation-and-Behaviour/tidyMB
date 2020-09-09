@@ -18,10 +18,10 @@ use_mbtemplate <-
            ...) {
 
     if(is.null(name)){
-      name <- paste0(format(last_tt,"%Y_%m_%d"),"_MB_MS.Rmd")
+      name <- paste0(format("%Y_%m_%d"),"_MB_MS.Rmd")
     }
 
-    use_template("manuscript.Rmd",
+    use_template("manuscript_template.Rmd",
                  save_as=name,
                  package = "themeMB", ..., open = open)
   }
