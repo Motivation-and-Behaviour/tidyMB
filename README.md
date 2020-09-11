@@ -24,20 +24,3 @@ The development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("Motivation-and-Behaviour/tidyMB")
 ```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(magrittr)
-library(gt)
-library(tidyMB)
-iris %>%
-  head() %>%
-  gt() %>%
-  apa_style(title = 'Table 1', subtitle = "_Isis Database_") %>%
-  gtsave(filename = 'fig1.png',path = "fig") 
-```
-
-<img src="man/figures/README-example-1.png" width="100%" />
