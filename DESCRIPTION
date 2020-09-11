@@ -21,6 +21,8 @@ Authors@R:
            )
 Description: This package houses opinionated style for documents, tables, and figures as used in the Motivation and Behaviour program at Institute for Positive Psychology and Education; Australian Catholic University. The package is designed for internal use and includes only slightly modified version of papaja templates.
 License: MIT + file LICENSE
+URL: https://github.com/Motivation-and-Behaviour/tidyMB
+BugReports: https://github.com/Motivation-and-Behaviour/tidyMB/issues
 Suggests: 
     testthat,
     extrafont (>= 0.17),
