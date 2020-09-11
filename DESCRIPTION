@@ -2,16 +2,30 @@ Package: tidyMB
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Philip",
+           family = "Parker",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "philip.parker@acu.edu.au",
+           comment = c(ORCID = "0000-0002-4604-8566")),
+    person(given = "Taren",
+           family = "Sanders",
+           role = c("aut", "cre"),
+           email = "taren.sanders@acu.edu.au",
+           comment = c(ORCID = "0000-0002-4504-6008")),
+    person(given = "Michael",
+           family = "Noetel",
+           role = c("aut", "cre"),
+           email = "michael.noetel@acu.edu.au",
+           comment = c(ORCID = "0000-0002-6563-8203"))
+Description: This package houses opinionated style for documents, tables, and figures
+as used in the Motivation and Behaviour program at Institute for Positive Psychology and Education;
+Australian Catholic University. The package is designed for internal use and includes 
+only slightly modified version of papaja templates.
 License: MIT + file LICENSE
 Suggests: 
     testthat,
-    extrafont (>= 0.17)
+    extrafont (>= 0.17),
+    papaja (>= 0.1.0.9997)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
