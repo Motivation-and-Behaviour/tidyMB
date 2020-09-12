@@ -1,0 +1,4 @@
+Name: Span ID Marker
+Description: Adds span tags around selected text with id argument.
+Binding: span_id_addin
+Interactive: false
