@@ -2,3 +2,10 @@ Name: Span ID Marker
 Description: Adds span tags around selected text with id argument.
 Binding: span_id_addin
 Interactive: false
+
+
+Name: Remove span tags
+Description: Removes span tags around selected text.
+Binding: span_remove_addin
+Interactive: false
+

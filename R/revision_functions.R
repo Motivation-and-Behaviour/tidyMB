@@ -37,3 +37,24 @@ span_id_addin <- function() {
   selection <- rstudioapi::primary_selection(context)
   rstudioapi::insertText(glue::glue('<span id = "id">{selection$text}</span>'))
 }
+
+
+#' span_remove_addin
+#'
+#' @importFrom rstudioapi getSourceEditorContext primary_selection insertText
+#' @importFrom stringr str_replace
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+span_remove_addin <- function() {
+  context = rstudioapi::getSourceEditorContext()
+  selection = rstudioapi::primary_selection(context)
+  text = stringr::str_replace(selection$text,"<\\s*span[^>]*>(.*?)<\\s*/\\s*span>","\\1")
+  rstudioapi::insertText(text)
+}
+
+
+
