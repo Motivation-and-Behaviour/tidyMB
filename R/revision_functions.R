@@ -14,11 +14,17 @@
 #'
 #' @examples
 read_manuscript <- function(address,id){
+  # Test for missing or non-character id
+  if(missing(id)|!is.character(id)) stop("Please specify an id string")
+  # Read in data and parse
   tmp = xml2::read_html(address) %>%
-    rvest::html_nodes(xpath = glue::glue('//*[@id="{id}"]') ) %>%
+    rvest::html_nodes(xpath = glue::glue('//*[@id="{id}"]') )
+  # Test if id is unique
+  if(length(tmp)>1) warning("ID is not unique")
+  # Extract
+  tmp = tmp %>%
     rvest::html_text() %>%
     stringr::str_trim()
-
   return(tmp)
 }
 
