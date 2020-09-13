@@ -9,3 +9,8 @@ Description: Removes span tags around selected text.
 Binding: span_remove_addin
 Interactive: false
 
+Name: Open M&B Research Wiki
+Description: Opens the Motivation and Behaviour Wiki page.
+Binding: open_notion
+Interactive: false
+
