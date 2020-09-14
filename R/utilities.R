@@ -1,6 +1,7 @@
 
 #' open_notion
 #'
+#' @importFrom utils browseURL
 #'
 #' @return
 #' @export
