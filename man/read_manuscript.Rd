@@ -4,16 +4,21 @@
 \alias{read_manuscript}
 \title{read_manuscript}
 \usage{
-read_manuscript(address, id)
+read_manuscript(address, id, current)
 }
 \arguments{
 \item{address}{string url or file location of knited html}
 
 \item{id}{the id from a html tag}
+
+\item{current}{the current version of the paragraph (optional)}
 }
 \value{
 
 }
 \description{
 read_manuscript
+}
+\examples{
+
 }
