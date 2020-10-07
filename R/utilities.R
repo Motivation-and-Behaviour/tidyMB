@@ -12,7 +12,7 @@ open_notion <- function() {
 }
 
 
-#' theme_mnb
+#' theme_mb
 #' Loads an object for customising plots to an MnB theme
 #' @return
 #' @export
@@ -28,8 +28,8 @@ open_notion <- function() {
 #' mnb_version <- original + theme_mnb()
 #' }
 
-theme_mnb <- function(){
-  theme_mnb <- ggthemes::theme_fivethirtyeight() %+replace%
+theme_mb <- function(){
+  theme_mb <- ggthemes::theme_fivethirtyeight() %+replace%
     ggplot2::theme(legend.position = "none",
           text = ggplot2::element_text(family = "Times"),
           axis.title.x = ggplot2::element_text(hjust = 1, vjust = 1),
@@ -38,5 +38,5 @@ theme_mnb <- function(){
           plot.background = ggplot2::element_blank(),
           strip.background = ggplot2::element_blank(),
           legend.background = ggplot2::element_blank())
-  return(theme_mnb)
+  return(theme_mb)
 }

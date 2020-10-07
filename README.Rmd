@@ -32,5 +32,20 @@ devtools::install_github("Motivation-and-Behaviour/tidyMB")
 ```
 
 
+## Example plot comparing default with theme_mnb
 
+``` {r warnings = FALSE, messages = FALSE, errors = FALSE}
+library(tidyMB)
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(gridExtra))
+## Then use the + mnb on your plots ##
+original <- iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
+        geom_smooth(method = "lm", se = F) +
+        geom_jitter()
+mnb_version <- original + theme_mb()
+
+grid.arrange(original, mnb_version, ncol = 2)
+
+```
 
