@@ -2,6 +2,7 @@
 
 S3method(print,palette)
 export(apa_style)
+export(extract_comments)
 export(iplay_pal)
 export(open_notion)
 export(read_manuscript)
