@@ -10,5 +10,5 @@ extract_comments(path)
 \item{path}{path to file to read}
 }
 \description{
-Reads in a file and pulls out text between comments (<!--{text}-->)
+Reads in a file and pulls out text between comments (\<!--{text}--\>)
 }

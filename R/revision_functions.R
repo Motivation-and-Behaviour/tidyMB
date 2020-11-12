@@ -62,5 +62,24 @@ span_remove_addin <- function() {
   rstudioapi::insertText(text)
 }
 
+#' evaluate_code
+#'
+#' Evaluates embeded rchunks
 
+evaluate_code <- function(string){
+
+  while(grepl("`r.*`",string)){
+
+    target <- unlist(stringr::str_match(string, "`r.*`"))[1]
+
+
+    replacement <- gsub("#{1,}","**", target)
+    replacement <- gsub("\\r","**\\\r", replacement)
+    replacement <- gsub("\\*\\*\\s","**", replacement)
+
+    string <- gsub(target, replacement, string)
+  }
+
+
+}
 
