@@ -4,7 +4,7 @@
 \alias{create_todo}
 \title{create_todo}
 \usage{
-create_todo(rmd, path = NULL)
+create_todo(rmd = NULL, path = NULL)
 }
 \arguments{
 \item{rmd}{path to rmarkdown file to extract html comments from}

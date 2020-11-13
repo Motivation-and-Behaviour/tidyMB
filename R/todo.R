@@ -27,7 +27,8 @@ extract_comments <- function(path) {
 #' create_todo(filepath)
 #' @export
 
-create_todo <- function(rmd, path = NULL){
+create_todo <- function(rmd = NULL, path = NULL){
+  if(is.null(rmd)) rmd = rstudioapi::getActiveDocumentContext()$path
   comments <- extract_comments(rmd)
   todos <- unlist(comments[grepl("\\|TODO\\|", unlist(comments), ignore.case = TRUE)])
   # extract completions
@@ -51,7 +52,7 @@ create_todo <- function(rmd, path = NULL){
     person = paste("###", a)
     tasks <- paste(glue::glue_data(info, pattern), collapse = "\n")
 
-    paste0(person, "\n", tasks)
+    paste0(person, "\n\n", tasks)
   })
 
   out_text <- paste(tasks, collapse = "\n\n")
