@@ -2,8 +2,6 @@
 output: html_document
 ---
 
-<!--|ASANA| @taren = #15323; @phil = #15642; @james = #11532-->
-
 # Lorem Ipsum
 
 <!-- Example 1 -->
