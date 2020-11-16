@@ -62,24 +62,36 @@ span_remove_addin <- function() {
   rstudioapi::insertText(text)
 }
 
-#' evaluate_code
+#' evaluate_inline
 #'
-#' Evaluates embeded rchunks
+#' Evaluates embedded rchunks within a string of text
+#' @examples
+#' evaluate_inline("1+1 = `r 1+1`")
+#' @export
 
-evaluate_code <- function(string){
+evaluate_inline <- function(string){
+  glue::glue(string, .open = "`r", .close = "`")
+}
 
-  while(grepl("`r.*`",string)){
+#' get_page_number
+#'
+#' Finds page number from pdf based on text matching
+#' @param string text to match
+#' @param path file to search
+#' @param max.distance scalar. The proportion that a match can vary from the input string (see agrep)
+#' @export
 
-    target <- unlist(stringr::str_match(string, "`r.*`"))[1]
-
-
-    replacement <- gsub("#{1,}","**", target)
-    replacement <- gsub("\\r","**\\\r", replacement)
-    replacement <- gsub("\\*\\*\\s","**", replacement)
-
-    string <- gsub(target, replacement, string)
+get_pdf_pagenumber = function(string, path, max.distance = .4){
+  ext <- tolower(tools::file_ext(path))
+  if(!ext %in% c("pdf")){
+    stop("Extracting page numbers only works for pdf documents")
   }
 
+  doc <- textreadr::read_pdf(path) %>% dplyr::group_by(page_id) %>%
+    dplyr::summarise(text = paste(text, collapse = " "), .groups = "drop")
 
+  pnum <- agrep(text, doc$text, max.distance = max.distance)
+  if(length(pnum) > 2) return(pnum[1:2])
+  pnum
 }
 
