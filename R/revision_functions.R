@@ -81,7 +81,7 @@ evaluate_inline <- function(string){
 #' @param max.distance scalar. The proportion that a match can vary from the input string (see agrep)
 #' @export
 
-get_pdf_pagenumber = function(string, path, max.distance = .4){
+get_pdf_pagenumber = function(string, path, max.distance = .2){
   ext <- tolower(tools::file_ext(path))
   if(!ext %in% c("pdf")){
     stop("Extracting page numbers only works for pdf documents")
