@@ -90,7 +90,7 @@ get_pdf_pagenumber = function(string, path, max.distance = .4){
   doc <- textreadr::read_pdf(path) %>% dplyr::group_by(page_id) %>%
     dplyr::summarise(text = paste(text, collapse = " "), .groups = "drop")
 
-  pnum <- agrep(text, doc$text, max.distance = max.distance)
+  pnum <- agrep(string, doc$text, max.distance = max.distance)
   if(length(pnum) > 2) return(pnum[1:2])
   pnum
 }
