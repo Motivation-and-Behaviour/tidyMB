@@ -4,14 +4,14 @@
 \alias{get_pdf_pagenumber}
 \title{get_page_number}
 \usage{
-get_pdf_pagenumber(string, path, ...)
+get_pdf_pagenumber(string, path, max.distance = 0.15)
 }
 \arguments{
 \item{string}{text to match}
 
 \item{path}{file to search}
 
-\item{...}{additional arguments for agrep}
+\item{max.distance}{argument passed to agrep}
 }
 \description{
 Finds page number from pdf based on text matching
