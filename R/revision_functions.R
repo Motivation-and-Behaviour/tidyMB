@@ -78,10 +78,10 @@ evaluate_inline <- function(string){
 #' Finds page number from pdf based on text matching
 #' @param string text to match
 #' @param path file to search
-#' @param max.distance scalar. The proportion that a match can vary from the input string (see agrep)
+#' @param ... additional arguments for agrep
 #' @export
 
-get_pdf_pagenumber = function(string, path, max.distance = .2){
+get_pdf_pagenumber = function(string, path, ...){
   ext <- tolower(tools::file_ext(path))
   if(!ext %in% c("pdf")){
     stop("Extracting page numbers only works for pdf documents")
@@ -90,8 +90,21 @@ get_pdf_pagenumber = function(string, path, max.distance = .2){
   doc <- textreadr::read_pdf(path) %>% dplyr::group_by(page_id) %>%
     dplyr::summarise(text = paste(text, collapse = " "), .groups = "drop")
 
+  pnum <- agrep(string, doc$text, ...)
+  if(length(pnum) > 0) return(pnum)
+
+  l <- lapply(1:length(doc$page_id), function(p){ # look at combinations of pages if no match
+    data.frame(
+    page_id = glue::glue("{p}-{p + 1}"),
+    text = paste(c(doc$text[p], doc$text[p + 1]), collapse = " ")
+    )
+  })
+
+  doc <- do.call(rbind, l)
   pnum <- agrep(string, doc$text, max.distance = max.distance)
-  if(length(pnum) > 2) return(pnum[1:2])
+  pnum <- doc$page_id[pnum]
+  if(length(pnum) == 0 ) stop("Couldn't find match")
   pnum
+
 }
 
