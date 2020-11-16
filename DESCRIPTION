@@ -49,4 +49,5 @@ Imports:
     graphics (>= 4.0.0),
     utils (>= 4.0.0),
     ggthemes (>= 4.2.0),
-    ggplot2 (>= 3.3.2)
+    ggplot2 (>= 3.3.2),
+    textreadr
