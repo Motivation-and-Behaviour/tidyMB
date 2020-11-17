@@ -102,7 +102,7 @@ get_pdf_pagenumber = function(string, path, max.distance = .15){
 
 
   pnum <- agrep(string, doc$text, ignore.case = TRUE, max.distance = max.distance)
-  if(length(pnum) > 0) return(pnum)
+  if(length(pnum) > 0) return(paste(pnum, collapse = ", "))
 
   l <- lapply(1:length(doc$page_id), function(p){ # look at combinations of pages if no match
 
