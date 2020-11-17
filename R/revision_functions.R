@@ -77,29 +77,33 @@ evaluate_inline <- function(string){
 #'
 #' Finds page number from pdf based on text matching
 #' @param string text to match
-#' @param path file to search
+#' @param pdf_path file to search
 #' @param max.distance argument passed to agrep
 #' @export
 
-get_pdf_pagenumber = function(string, path, max.distance = .15){
-  string <- gsub("\\[.*\\@.*]","",string) # remove references
+get_pdf_pagenumber = function(string, pdf_path, max.distance = .15){
+  string <- gsub("\\[.{0,50}\\]","",string) # remove square brackets
   string <- gsub("\\*|\\#", "", string) # remove rmarkdown formatting
   string <- gsub("[0-9]","", string) # remove numbers
+  string <- gsub("\\(.{0,50}\\)", "", tolower(string)) # remove parentheses
 
-  ext <- tolower(tools::file_ext(path))
+  ext <- tolower(tools::file_ext(pdf_path))
   if(!ext %in% c("pdf")){
     stop("Extracting page numbers only works for pdf documents")
   }
 
-  doc <- textreadr::read_pdf(path)
+  doc <- textreadr::read_pdf(pdf_path)
   running_head = gsub("running head: ", "" , tolower(doc$text[1]))
   running_head = trimws(gsub("[0-9]","",running_head))
 
   doc$text <- trimws(stringr::str_remove_all(doc$text, "[[:digit:]]")) # remove all numbers
+  doc$text <- stringr::str_remove_all(doc$text, "\\[.{0,50}\\]") # remove square brackets
+  doc$text <- stringr::str_remove_all(doc$text, "\\(.{0,50}\\)") # remove parentheses
 
   doc <- doc %>% dplyr::group_by(page_id) %>%
     dplyr::summarise(text = paste(text, collapse = " "), .groups = "drop")
 
+  doc$text <- stringr::str_remove_all(tolower(doc$text), glue::glue("^{running_head}"))
 
   pnum <- agrep(string, doc$text, ignore.case = TRUE, max.distance = max.distance)
   if(length(pnum) > 0) return(paste(pnum, collapse = ", "))
@@ -112,8 +116,8 @@ get_pdf_pagenumber = function(string, path, max.distance = .15){
     pages <- trimws(pages)
 
     data.frame(
-    page_id = glue::glue("{p}-{p + 1}"),
-    text = trimws(paste(pages, collapse = " "))
+      page_id = glue::glue("{p}-{p + 1}"),
+      text = trimws(paste(pages, collapse = " "))
     )
   })
 
