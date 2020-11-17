@@ -171,7 +171,7 @@ get_revision = function(id, path, evaluate = TRUE, quote = TRUE, pg_number = FAL
       pdf_path = gsub(glue::glue("{tools::file_ext(path)}$"), "pdf", path)
     }
     pnum = get_pdf_pagenumber(string, pdf_path)
-    string = paste0(string,"\n\nPg. ", pnum)
+    string = paste0(string,"\n\n\\begin{flushright}Pg. ", pnum, "\\end{flushright}")
   }
 
   string <- header_to_bold(string)
