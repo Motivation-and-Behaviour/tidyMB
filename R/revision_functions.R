@@ -124,7 +124,6 @@ get_pdf_pagenumber = function(string, pdf_path, max.distance = .15){
   doc <- do.call(rbind, l)
   pnum <- agrep(string, doc$text, ignore.case = TRUE, max.distance = max.distance)
   pnum <- doc$page_id[pnum]
-  if(length(pnum) == 0 ) stop("Couldn't find match")
   pnum
 
 }
@@ -161,13 +160,20 @@ header_to_bold = function(string){
 #' @param quote is the output chunk quoted?
 #' @param pg_number bool. Should pagenumbers be included?
 #' @param pdf_path path to pdf output for page number matching
+#' @param match string to match
+#' @param replace matched string will be replaced.
 #' @export
 
-get_revision = function(id, path, evaluate = TRUE, quote = TRUE, pg_number = FALSE, pdf_path = NULL){
+get_revision = function(id, path, evaluate = TRUE, quote = TRUE, pg_number = FALSE, pdf_path = NULL,
+                        match = NULL, replace = NULL){
   string <- read_manuscript(path, id)
 
   if(evaluate){
     string <- evaluate_inline(string)
+  }
+
+  if(!is.null(match)){
+    string <- gsub(match, replace, string)
   }
 
   if(pg_number){
@@ -175,6 +181,7 @@ get_revision = function(id, path, evaluate = TRUE, quote = TRUE, pg_number = FAL
       pdf_path = gsub(glue::glue("{tools::file_ext(path)}$"), "pdf", path)
     }
     pnum = get_pdf_pagenumber(string, pdf_path)
+    if(length(pnum) == 0) stop("Couldn't find pdf match for id: ", id)
     string = paste0(string,"\n\n\\begin{flushright}Pg. ", pnum, "\\end{flushright}")
   }
 
