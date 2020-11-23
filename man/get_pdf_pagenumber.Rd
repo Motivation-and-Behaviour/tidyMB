@@ -4,12 +4,12 @@
 \alias{get_pdf_pagenumber}
 \title{get_page_number}
 \usage{
-get_pdf_pagenumber(string, path, max.distance = 0.15)
+get_pdf_pagenumber(string, pdf_path, max.distance = 0.15)
 }
 \arguments{
 \item{string}{text to match}
 
-\item{path}{file to search}
+\item{pdf_path}{file to search}
 
 \item{max.distance}{argument passed to agrep}
 }

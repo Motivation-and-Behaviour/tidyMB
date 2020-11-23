@@ -10,7 +10,9 @@ get_revision(
   evaluate = TRUE,
   quote = TRUE,
   pg_number = FALSE,
-  pdf_path = NULL
+  pdf_path = NULL,
+  match = NULL,
+  replace = NULL
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ get_revision(
 \item{pg_number}{bool. Should pagenumbers be included?}
 
 \item{pdf_path}{path to pdf output for page number matching}
+
+\item{match}{string to match}
+
+\item{replace}{matched string will be replaced.}
 }
 \description{
 Extract and format revision

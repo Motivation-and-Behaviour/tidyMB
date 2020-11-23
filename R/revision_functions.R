@@ -194,3 +194,5 @@ get_revision = function(id, path, evaluate = TRUE, quote = TRUE, pg_number = FAL
 
   string
 }
+
+utils::globalVariables("page_id")
