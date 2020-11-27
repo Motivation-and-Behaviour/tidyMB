@@ -86,6 +86,7 @@ get_pdf_pagenumber = function(string, pdf_path, max.distance = .15){
   string <- gsub("\\*|\\#", "", string) # remove rmarkdown formatting
   string <- gsub("[0-9]","", string) # remove numbers
   string <- gsub("\\(.{0,50}\\)", "", tolower(string)) # remove parentheses
+  string <- gsub("[[:punct:]]", "", tolower(string)) # remove parentheses
 
   ext <- tolower(tools::file_ext(pdf_path))
   if(!ext %in% c("pdf")){
@@ -96,14 +97,15 @@ get_pdf_pagenumber = function(string, pdf_path, max.distance = .15){
   running_head = gsub("running head: ", "" , tolower(doc$text[1]))
   running_head = trimws(gsub("[0-9]","",running_head))
 
-  doc$text <- trimws(stringr::str_remove_all(doc$text, "[[:digit:]]")) # remove all numbers
-  doc$text <- stringr::str_remove_all(doc$text, "\\[.{0,50}\\]") # remove square brackets
-  doc$text <- stringr::str_remove_all(doc$text, "\\(.{0,50}\\)") # remove parentheses
+  doc$text <- stringr::str_remove_all(tolower(doc$text), glue::glue("^{running_head}"))
 
   doc <- doc %>% dplyr::group_by(page_id) %>%
     dplyr::summarise(text = paste(text, collapse = " "), .groups = "drop")
 
-  doc$text <- stringr::str_remove_all(tolower(doc$text), glue::glue("^{running_head}"))
+  doc$text <- trimws(stringr::str_remove_all(doc$text, "[[:digit:]]")) # remove all numbers
+  doc$text <- stringr::str_remove_all(doc$text, "\\[.{0,50}\\]") # remove square brackets
+  doc$text <- stringr::str_remove_all(doc$text, "\\(.{0,50}\\)") # remove parentheses
+  doc$text <- trimws(stringr::str_remove_all(doc$text, "[[:punct:]]")) # remove all punctuation
 
   pnum <- agrep(string, doc$text, ignore.case = TRUE, max.distance = max.distance)
   if(length(pnum) > 0) return(paste(pnum, collapse = ", "))
