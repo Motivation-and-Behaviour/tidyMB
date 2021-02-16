@@ -67,7 +67,6 @@ span_remove_addin <- function() {
 #' Evaluates embedded rchunks within a string of text
 #' @examples
 #' evaluate_inline("1+1 = `r 1+1`")
-#' @export
 
 evaluate_inline <- function(string){
   glue::glue(string, .open = "`r", .close = "`")
