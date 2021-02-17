@@ -5,8 +5,7 @@
 #'
 #' @return
 #' @export
-#'
-#' @examples
+
 iplay_pal <- function(){
   iplay <- c(`cold burst` =   "#272d57",
              `tiffany blue` = "#2fa9ad",

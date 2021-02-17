@@ -4,16 +4,21 @@
 \alias{read_manuscript}
 \title{read_manuscript}
 \usage{
-read_manuscript(address, id)
+read_manuscript(address, id = NULL, PDF = NULL)
 }
 \arguments{
-\item{address}{string url or file location of knited html}
+\item{address}{path to a rmarkdown file}
 
-\item{id}{the id from a html tag}
-}
-\value{
+\item{id}{if provided spans will be searched for text which will be returned}
 
+\item{PDF}{if TRUE, or path provided, a PDF will be loaded for page matching.}
 }
 \description{
-read_manuscript
+Reads in rmarkdown manuscript and an associated PDF as possible
+}
+\examples{
+path <- system.file("tests/test_doc.rmd",package = "tidyMB")
+manuscript <- read_manuscript(path, PDF = TRUE)
+manuscript
+get_revision(manuscript, "example_text")
 }

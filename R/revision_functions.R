@@ -1,19 +1,99 @@
+extract_html_sections <- function(path){
+  tmp = xml2::read_html(path) %>%
+    rvest::html_nodes(xpath = glue::glue('//*[@id]') )
+  section<- rvest::html_text(tmp)
+  tag <- rvest::html_attr(tmp, "id")
+  data.frame(tag, section)
+}
+
+#' extract_sections
+#' Extracts markdown sections
+
+extract_md_sections <- function(path){
+  if(!grepl("md$",basename(path), ignore.case = TRUE)) stop("can only be used on rmd, or md files")
+  lines <- readLines(path)
+  comments <- stringr::str_extract_all(lines, "\\[(?!\\s*\\@).+?(?=\\{\\#)\\{\\#[^\\[]*\\}")
+  comments = unlist(comments[sapply(comments, length) > 0])
+  sections <- lapply(comments, function(x){
+    tag <- stringr::str_extract(x,"\\{\\#.*\\}")
+    tag <- gsub("[\\{\\}\\#]","",tag)
+    tag <- trimws(tag)
+    section <- gsub("\\{\\#.*\\}", "", x)
+    section <- substring(section, 2,nchar(section)-1)
+    data.frame(tag = tag, section = section)
+  })
+  do.call(rbind, sections)
+}
+
 #' read_manuscript
+#'
+#' Reads in rmarkdown manuscript and an associated PDF as possible
+#' @param address path to a rmarkdown file
+#' @param id if provided spans will be searched for text which will be returned
+#' @param PDF if TRUE, or path provided, a PDF will be loaded for page matching.
+#' @export
+#' @examples
+#' path <- system.file("tests/test_doc.rmd",package = "tidyMB")
+#' manuscript <- read_manuscript(path, PDF = TRUE)
+#' manuscript
+#' get_revision(manuscript, "example_text")
+
+read_manuscript <- function(address, id = NULL, PDF = NULL){
+  if(!is.null(id)) return(read_spans(address, id))
+  sections <- rbind(extract_md_sections(address), extract_html_sections(address))
+  section_names <- sections$tag
+  sections <- as.list(sections$section)
+  names(sections) <- section_names
+  if(!is.null(PDF)) {
+    if (PDF == TRUE) {
+      PDF <- gsub(tools::file_ext(address), "pdf", address)
+    }
+    if (class(PDF) == "character") {
+      PDF <- process_pdf(PDF)
+    } else{
+      PDF <- NULL
+    }
+  } else{
+    PDF <- NULL
+  }
+  manuscript <- list(sections = sections,PDF = PDF)
+  class(manuscript) <- "manuscript"
+  manuscript
+
+}
+
+#' print.manuscript
+#'
+#' Print method for manuscripts
+#' @export
+
+print.manuscript = function(x){
+
+n_sections <- glue::glue("\033[34m- {length(x$sec)} sections\033[39m")
+if(is.null(x$PDF)){
+  PDF_info <- "\033[31mNo PDF attached\033[39m"
+}else{
+  PDF_info <- glue::glue("\033[32m- {nrow(x$PDF)} pages\033[39m")
+}
+
+cat("<Manuscript>")
+cat("\n")
+cat(n_sections)
+cat("\n")
+cat(PDF_info)
+
+
+
+}
+
+
+#' read_spans
 #'
 #' @param address string url or file location of knited html
 #' @param id the id from a html tag
-#'
-#' @importFrom glue glue
-#' @importFrom rvest html_nodes html_text
-#' @importFrom xml2 read_html
-#' @importFrom stringr str_trim
 #' @importFrom magrittr "%>%"
-#'
-#' @return
-#' @export
-#'
-#' @examples
-read_manuscript <- function(address,id){
+
+read_spans <- function(address, id){
   # Test for missing or non-character id
   if(missing(id)|!is.character(id)) stop("Please specify an id string")
   # Read in data and parse
@@ -36,8 +116,7 @@ read_manuscript <- function(address,id){
 #'
 #' @return
 #' @export
-#'
-#' @examples
+
 span_id_addin <- function() {
   context <- rstudioapi::getSourceEditorContext()
   selection <- rstudioapi::primary_selection(context)
@@ -53,8 +132,7 @@ span_id_addin <- function() {
 #' @return
 #' @export
 #'
-#' @examples
-#'
+
 span_remove_addin <- function() {
   context = rstudioapi::getSourceEditorContext()
   selection = rstudioapi::primary_selection(context)
@@ -72,27 +150,18 @@ evaluate_inline <- function(string){
   glue::glue(string, .open = "`r", .close = "`")
 }
 
-#' get_page_number
+#' process_pdf
 #'
-#' Finds page number from pdf based on text matching
-#' @param string text to match
-#' @param pdf_path file to search
-#' @param max.distance argument passed to agrep
-#' @export
+#' process pdf file
+#' @param path path to pdf
 
-get_pdf_pagenumber = function(string, pdf_path, max.distance = .15){
-  string <- gsub("\\[.{0,50}\\]","",string) # remove square brackets
-  string <- gsub("\\*|\\#", "", string) # remove rmarkdown formatting
-  string <- gsub("[0-9]","", string) # remove numbers
-  string <- gsub("\\(.{0,50}\\)", "", tolower(string)) # remove parentheses
-  string <- gsub("[[:punct:]]", "", tolower(string)) # remove parentheses
-
-  ext <- tolower(tools::file_ext(pdf_path))
+process_pdf <- function(path){
+  ext <- tolower(tools::file_ext(path))
   if(!ext %in% c("pdf")){
     stop("Extracting page numbers only works for pdf documents")
   }
 
-  doc <- textreadr::read_pdf(pdf_path)
+  doc <- textreadr::read_pdf(path)
   running_head = gsub("running head: ", "" , tolower(doc$text[1]))
   running_head = trimws(gsub("[0-9]","",running_head))
 
@@ -105,6 +174,25 @@ get_pdf_pagenumber = function(string, pdf_path, max.distance = .15){
   doc$text <- stringr::str_remove_all(doc$text, "\\[.{0,50}\\]") # remove square brackets
   doc$text <- stringr::str_remove_all(doc$text, "\\(.{0,50}\\)") # remove parentheses
   doc$text <- trimws(stringr::str_remove_all(doc$text, "[[:punct:]]")) # remove all punctuation
+  attr(doc, "running_head") <- running_head
+  doc
+}
+
+#' get_page_number
+#'
+#' Finds page number from pdf based on text matching
+#' @param string text to match
+#' @param pdf_text text to search
+#' @param max.distance argument passed to agrep
+
+get_pdf_pagenumber = function(string, pdf_text, max.distance = .15){
+  string <- gsub("\\[.{0,50}\\]","",string) # remove square brackets
+  string <- gsub("\\*|\\#", "", string) # remove rmarkdown formatting
+  string <- gsub("[0-9]","", string) # remove numbers
+  string <- gsub("\\(.{0,50}\\)", "", tolower(string)) # remove parentheses
+  string <- gsub("[[:punct:]]", "", tolower(string)) # remove parentheses
+
+  doc <- pdf_text
 
   pnum <- agrep(string, doc$text, ignore.case = TRUE, max.distance = max.distance)
   if(length(pnum) > 0) return(paste(pnum, collapse = ", "))
@@ -112,7 +200,7 @@ get_pdf_pagenumber = function(string, pdf_path, max.distance = .15){
   l <- lapply(1:length(doc$page_id), function(p){ # look at combinations of pages if no match
 
     pages = sapply(c(doc$text[p], doc$text[p + 1]), function(x){
-      gsub(glue::glue("^{running_head}") , "", tolower(unlist(x)))
+      gsub(glue::glue("^{attr(doc,'running_head')}") , "", tolower(unlist(x)))
     })
     pages <- trimws(pages)
 
@@ -157,39 +245,34 @@ header_to_bold = function(string){
 #' Extract and format revision
 #' @param id the id from a html tag
 #' @param path the path to an rmarkdown manuscript
-#' @param evaluate bool. Should inline rchunks be executed?
 #' @param quote is the output chunk quoted?
-#' @param pg_number bool. Should pagenumbers be included?
-#' @param pdf_path path to pdf output for page number matching
-#' @param match string to match
-#' @param replace matched string will be replaced.
+#' @param evaluate bool. Should inline rchunks be executed?
 #' @export
 
-get_revision = function(id, path, evaluate = TRUE, quote = TRUE, pg_number = FALSE, pdf_path = NULL,
-                        match = NULL, replace = NULL){
-  string <- read_manuscript(path, id)
+get_revision = function(manuscript, id, quote = TRUE, evaluate = TRUE){
+
+  string <- manuscript$sections[id][[1]]
 
   if(evaluate){
     string <- evaluate_inline(string)
   }
 
-  if(!is.null(match)){
-    string <- gsub(match, replace, string)
-  }
+  if (!is.null(manuscript$PDF)) {
 
-  if(pg_number){
-    if(is.null(pdf_path)){
-      pdf_path = gsub(glue::glue("{tools::file_ext(path)}$"), "pdf", path)
-    }
-    pnum = get_pdf_pagenumber(string, pdf_path)
-    if(length(pnum) == 0) stop("Couldn't find pdf match for id: ", id)
-    string = paste0(string,"\n\n\\begin{flushright}Pg. ", pnum, "\\end{flushright}")
+    pnum = get_pdf_pagenumber(string, pdf_text = manuscript$PDF)
+    if (length(pnum) == 0)
+      stop("Couldn't find pdf match for id: ", id)
+    string = paste0(string,
+                    "\n\n\\begin{flushright}Pg. ",
+                    pnum,
+                    "\\end{flushright}")
   }
 
   string <- header_to_bold(string)
 
   if(quote){
     string <- gsub("\\n","\\\n>",string)
+    string <- paste0(">",string)
   }
 
 

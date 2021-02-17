@@ -4,7 +4,6 @@
 #' @param path input path
 #' @param out output path
 #' @details requires a docto installation to work
-#' @export
 
 docx_to_pdf = function(path, out){
   check_docto_installed()

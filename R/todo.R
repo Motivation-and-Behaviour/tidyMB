@@ -1,8 +1,8 @@
+
 #' extract_comments
 #'
 #' Reads in a file and pulls out text between comments (\<!--{text}--\>)
 #' @param path path to file to read
-#' @export
 
 extract_comments <- function(path) {
   if(!grepl("md$",basename(path), ignore.case = TRUE)) stop("can only be used on rmd, or md files")

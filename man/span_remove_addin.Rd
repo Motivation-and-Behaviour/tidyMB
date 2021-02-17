@@ -12,6 +12,3 @@ span_remove_addin()
 \description{
 span_remove_addin
 }
-\examples{
-
-}

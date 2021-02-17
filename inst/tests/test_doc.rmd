@@ -1,12 +1,12 @@
 ---
-output: html_document
+output: pdf_document
 ---
 
 # Lorem Ipsum
 
 <!-- Example 1 -->
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae dolor ipsum. Mauris elementum facilisis arcu in eleifend. Vestibulum vulputate neque sapien, sit amet ornare massa lobortis eget. Integer at nibh efficitur, ornare diam sit amet, feugiat arcu. Morbi varius finibus lectus, eget efficitur magna varius et. Etiam blandit elit in lorem bibendum suscipit. Praesent sit amet ipsum placerat, finibus velit vel, consectetur erat. Maecenas vestibulum, urna eget interdum dictum, lorem augue semper velit, sed egestas enim arcu non dolor. In suscipit tortor vel orci convallis consectetur.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae dolor ipsum. Mauris elementum facilisis arcu in eleifend. [This section of text has been marked with a markdown tag so it can be later extracted]{#example_text}, feugiat arcu. Morbi varius finibus lectus, eget efficitur magna varius et. Etiam blandit elit in lorem bibendum suscipit. Praesent sit amet ipsum placerat, finibus velit vel, consectetur erat. Maecenas vestibulum, urna eget <span id = "example_text2">As has this text, but this time we used a span with an associated id</span>.
 
 <!--|X|TODO| @James write TODO function (example 2)-->
 

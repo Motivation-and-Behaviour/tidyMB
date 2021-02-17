@@ -4,33 +4,16 @@
 \alias{get_revision}
 \title{get_revision}
 \usage{
-get_revision(
-  id,
-  path,
-  evaluate = TRUE,
-  quote = TRUE,
-  pg_number = FALSE,
-  pdf_path = NULL,
-  match = NULL,
-  replace = NULL
-)
+get_revision(manuscript, id, quote = TRUE, evaluate = TRUE)
 }
 \arguments{
 \item{id}{the id from a html tag}
 
-\item{path}{the path to an rmarkdown manuscript}
+\item{quote}{is the output chunk quoted?}
 
 \item{evaluate}{bool. Should inline rchunks be executed?}
 
-\item{quote}{is the output chunk quoted?}
-
-\item{pg_number}{bool. Should pagenumbers be included?}
-
-\item{pdf_path}{path to pdf output for page number matching}
-
-\item{match}{string to match}
-
-\item{replace}{matched string will be replaced.}
+\item{path}{the path to an rmarkdown manuscript}
 }
 \description{
 Extract and format revision
