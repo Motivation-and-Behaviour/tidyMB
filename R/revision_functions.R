@@ -1,5 +1,21 @@
+read_md <- function(path){
+  unname(unlist(read.delim(path, sep = "\n", quote = "", header = FALSE)))
+}
+
+extract_refs <- function(path){
+  lines <- read_md(path)
+  lines <- paste(lines, collapse = "\n")
+  references <- unlist(stringr::str_extract_all(lines, "\\\\\\@ref.+?\\)"))
+  figures <- data.frame(text = unique(grep("fig:",references, value = TRUE)))
+  tables <- data.frame(text = unique(grep("tab:",references, value = TRUE)))
+  figures$ref <- seq_along(figures[,1])
+  tables$ref <- seq_along(tables[,1])
+  list(figures = figures, tables = tables)
+
+}
+
 extract_html_sections <- function(path){
-  lines <- read.csv(path, header = FALSE,sep = "\n")[,1]
+  lines <- read_md(path)
   df <- data.frame(lines)
   df$is_chunk <- FALSE
   is_chunk <- FALSE
@@ -8,12 +24,11 @@ extract_html_sections <- function(path){
     df$is_chunk[i] <- is_chunk
     if(grepl("\\`\\`\\`$",df$lines[i])) is_chunk <- FALSE
   }
-  document <- paste(df$lines[!df$is_chunk], collapse = "\\n")
+  document <- paste(df$lines[!df$is_chunk], collapse = "\n")
   tmp = xml2::read_html(document)%>%
     rvest::html_nodes(xpath = glue::glue('//*[@id]') )
   section<- rvest::html_text(tmp)
   section <- gsub("\\\\n","\\\n", section)
-  gsub("\\\\n","\\n",section)
   tag <- rvest::html_attr(tmp, "id")
   data.frame(tag, section)
 }
@@ -24,8 +39,9 @@ extract_html_sections <- function(path){
 extract_md_sections <- function(path){
   if(!grepl("md$",basename(path), ignore.case = TRUE)) stop("can only be used on rmd, or md files")
   lines <- readLines(path)
-  comments <- stringr::str_extract_all(lines, "\\[(?!\\s*\\@).+?(?=\\{\\#)\\{\\#[^\\[]*\\}")
-  comments = unlist(comments[sapply(comments, length) > 0])
+  lines <- paste(lines, collapse = "\n")
+  #comments <- stringr::str_extract_all(lines, "\\[(?!\\s*\\@).+?(?=\\{\\#)\\{\\#[^\\[]*\\}")
+  comments <- unlist(stringr::str_extract_all(lines, "\\[(?!\\s*\\@).+?\\]\\{#.+?\\}"))
   sections <- lapply(comments, function(x){
     tag <- stringr::str_extract(x,"\\{\\#.*\\}")
     tag <- gsub("[\\{\\}\\#]","",tag)
@@ -68,7 +84,8 @@ read_manuscript <- function(address, id = NULL, PDF = NULL){
   } else{
     PDF <- NULL
   }
-  manuscript <- list(sections = sections,PDF = PDF)
+  refs <- extract_refs(address)
+  manuscript <- list(sections = sections,PDF = PDF, refs = refs)
   class(manuscript) <- "manuscript"
   manuscript
 
@@ -283,6 +300,16 @@ get_revision = function(manuscript, id, quote = TRUE, evaluate = TRUE){
   }
 
   string <- header_to_bold(string)
+
+  for(i in seq_along(manuscript$refs$tables[,1])){ # replace \\@ref(tab:)
+    string <- gsub(manuscript$refs$tables$text[i], manuscript$refs$tables$ref[i], string,
+         fixed = TRUE)
+  }
+
+  for(i in seq_along(manuscript$refs$figures[,1])){ # replace \\@ref(fig:)
+    string <- gsub(manuscript$refs$figures$text[i], manuscript$refs$figures$ref[i], string,
+                   fixed = TRUE)
+  }
 
   if(quote){
     string <- gsub("\\n","\\\n>",string)
