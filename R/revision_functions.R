@@ -24,7 +24,7 @@ extract_html_sections <- function(path){
     df$is_chunk[i] <- is_chunk
     if(grepl("\\`\\`\\`$",df$lines[i])) is_chunk <- FALSE
   }
-  document <- paste(df$lines[!df$is_chunk], collapse = "\n")
+  document <- paste(df$lines[!df$is_chunk], collapse = "\n\n")
   tmp = xml2::read_html(document)%>%
     rvest::html_nodes(xpath = glue::glue('//*[@id]') )
   section<- rvest::html_text(tmp)
@@ -39,7 +39,7 @@ extract_html_sections <- function(path){
 extract_md_sections <- function(path){
   if(!grepl("md$",basename(path), ignore.case = TRUE)) stop("can only be used on rmd, or md files")
   lines <- readLines(path)
-  lines <- paste(lines, collapse = "\n")
+  lines <- paste(lines, collapse = "\n\n")
   #comments <- stringr::str_extract_all(lines, "\\[(?!\\s*\\@).+?(?=\\{\\#)\\{\\#[^\\[]*\\}")
   comments <- unlist(stringr::str_extract_all(lines, "\\[(?!\\s*\\@).+?\\]\\{#.+?\\}"))
   sections <- lapply(comments, function(x){
@@ -255,13 +255,13 @@ get_pdf_pagenumber = function(string, pdf_text, max.distance = .15){
 header_to_bold = function(string){
 
   while(grepl("#{1,}.{0,100}\\\n",string)){
-    target <- stringr::str_extract(string, "#{1,}.+?\\n")
+    target <- stringr::str_extract(string, "#{1,}.+?(\\n){1,}")
     n_hash <- sum(strsplit(target, split = "")[[1]]=="#")
     replacement <- gsub("#{1,}\\s?","**", target)
     if(n_hash < 3){
-    replacement <- gsub("\\n","**\\\n\\\n", replacement)
+    replacement <- gsub("\\n{1,}","**\\\n\\\n", replacement)
     } else{
-      replacement <- gsub("\\n",".**\\\n", replacement)
+      replacement <- gsub("\\n{1,}",".** ", replacement)
     }
     string <- gsub(target, replacement, string)
   }
