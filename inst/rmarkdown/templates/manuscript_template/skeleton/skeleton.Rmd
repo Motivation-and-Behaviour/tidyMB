@@ -1,46 +1,46 @@
 ---
 title             : "The title"
 shorttitle        : "Title"
-author:
+author: 
   - name          : "First Author"
-affiliation   : "1"
-corresponding : yes    # Define only one corresponding author
-address       : "Postal address"
-email         : "my@email.com"
-role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
-  - Conceptualization
-- Writing - Original Draft Preparation
-- Writing - Review & Editing
-- name          : "Deputy Dog"
-affiliation   : "1,2"
-role:
-  - Writing - Review & Editing
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "my@email.com"
+    role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
+      - Conceptualization
+      - Writing - Original Draft Preparation
+      - Writing - Review & Editing
+  - name          : "Ernst-August Doelle"
+    affiliation   : "1,2"
+    role:
+      - Writing - Review & Editing
 affiliation:
   - id            : "1"
-institution   : "Institute for Positive Psychology and Education, Australian Catholic University"
-- id            : "2"
-institution   : "ABC Inc"
+    institution   : "Institute for Positive Psychology and Education, Australian Catholic University"
+  - id            : "2"
+    institution   : "ABC Inc"
 authornote: |
   Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
-Enter author note here.
+  Enter author note here.
 abstract: |
   One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
-
-Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
-
-One sentence clearly stating the **general problem** being addressed by  this particular study.
-
-One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
-
-Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
-
-One or two sentences to put the results into a more **general context**.
-
-Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
-
-
-<!-- https://tinyurl.com/ybremelq -->
-  keywords          : "keywords"
+  
+  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
+  
+  One sentence clearly stating the **general problem** being addressed by  this particular study.
+  
+  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
+  
+  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
+  
+  One or two sentences to put the results into a more **general context**.
+  
+  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
+  
+  
+  <!-- https://tinyurl.com/ybremelq -->
+keywords          : "keywords"
 wordcount         : "X"
 bibliography      : ["r-references.bib"]
 floatsintext      : no
@@ -53,19 +53,19 @@ draft             : no
 documentclass     : "apa6"
 classoption       : "man"
 output            :
+  papaja:
+    papaja::apa6_pdf
+  html_notebook:
+    fig_caption: yes
+    toc: yes
+    highlight: haddock
+    theme: spacelab
   html_document:
-  fig_caption: yes
-toc: yes
-html_notebook:
-  fig_caption: yes
-toc: yes
-highlight: haddock
-theme: spacelab
-papaja:
-  papaja::apa6_pdf
+    fig_caption: yes
+    toc: yes
 ---
 
-  ```{r setup, include = FALSE}
+```{r setup, include = FALSE}
 # Create Reference List
 library("papaja")
 library("tidyMB")
