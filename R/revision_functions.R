@@ -1,7 +1,19 @@
 extract_html_sections <- function(path){
-  tmp = xml2::read_html(path) %>%
+  lines <- read.csv(path, header = FALSE,sep = "\n")[,1]
+  df <- data.frame(lines)
+  df$is_chunk <- FALSE
+  is_chunk <- FALSE
+  for(i in seq_along(df$is_chunk)){
+    if(grepl("\\`\\`\\`.*\\{",df$lines[i])) is_chunk <- TRUE
+    df$is_chunk[i] <- is_chunk
+    if(grepl("\\`\\`\\`$",df$lines[i])) is_chunk <- FALSE
+  }
+  document <- paste(df$lines[!df$is_chunk], collapse = "\\n")
+  tmp = xml2::read_html(document)%>%
     rvest::html_nodes(xpath = glue::glue('//*[@id]') )
   section<- rvest::html_text(tmp)
+  section <- gsub("\\\\n","\\\n", section)
+  gsub("\\\\n","\\n",section)
   tag <- rvest::html_attr(tmp, "id")
   data.frame(tag, section)
 }
@@ -225,13 +237,15 @@ get_pdf_pagenumber = function(string, pdf_text, max.distance = .15){
 
 header_to_bold = function(string){
 
-  while(grepl("#{1,}.*\\r",string)){
-
-    target <- unlist(stringr::str_match(string, "#{1,}.*\\r"))[1]
-    replacement <- gsub("#{1,}","**", target)
-    replacement <- gsub("\\r","**\\\r", replacement)
-    replacement <- gsub("\\*\\*\\s","**", replacement)
-
+  while(grepl("#{1,}.{0,100}\\\n",string)){
+    target <- stringr::str_extract(string, "#{1,}.+?\\n")
+    n_hash <- sum(strsplit(target, split = "")[[1]]=="#")
+    replacement <- gsub("#{1,}\\s?","**", target)
+    if(n_hash < 3){
+    replacement <- gsub("\\n","**\\\n\\\n", replacement)
+    } else{
+      replacement <- gsub("\\n",".**\\\n", replacement)
+    }
     string <- gsub(target, replacement, string)
   }
 

@@ -1,6 +1,6 @@
 Package: tidyMB
 Title: Functions to improve workflow for motivation and behaviour research
-Version: 0.0.1.0
+Version: 0.0.1.1
 Authors@R: 
     c(
     person(given = "Philip",
