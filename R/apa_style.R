@@ -11,7 +11,9 @@
 #' @import gt
 #'
 #' @details
-#' - For fonts beyond those installed in base R use [extrafont package](https://cran.r-project.org/web/packages/extrafont/README.html)
+#' - For fonts beyond those installed in base R use
+#' [extrafont package]
+#' (https://cran.r-project.org/web/packages/extrafont/README.html)
 #' - Titles should be enumerated e.g. Table 1
 #' - Subtitles should be brief and in sentence case
 #'
@@ -22,16 +24,17 @@
 #' @keywords style
 #'
 #' @examples
-#' \dontrun{gt(iris) %>% apa_style()}
-
+#' \dontrun{
+#' gt(iris) %>% apa_style()
+#' }
 apa_style <- function(tab, font = "times",
                       title = "Table 1",
                       subtitle = "Table Title") {
   # tests
-  if(!"gt_tbl" %in% class(tab)){
-    stop('data is not of class gt_tbl')
+  if (!"gt_tbl" %in% class(tab)) {
+    stop("data is not of class gt_tbl")
   }
-  #required package for example to run
+  # required package for example to run
   tab %>%
     gt::opt_table_lines(extent = "none") %>%
     gt::tab_options(
@@ -57,7 +60,6 @@ apa_style <- function(tab, font = "times",
     gt::tab_header(
       title = title,
       subtitle = md(subtitle)
-      ) %>%
+    ) %>%
     opt_align_table_header(align = "left")
 }
-
