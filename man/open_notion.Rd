@@ -7,8 +7,8 @@
 open_notion()
 }
 \value{
-
+Nothing
 }
 \description{
-open_notion
+Open the M&B Workflow Notion page in the browser.
 }

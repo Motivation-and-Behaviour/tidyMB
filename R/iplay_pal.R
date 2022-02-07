@@ -1,9 +1,8 @@
 
-#' iplay_pal
+#' iPLAY Palette
 #'
+#' @return A list of colors for use in iPLAY
 #'
-#'
-#' @return
 #' @export
 
 iplay_pal <- function() {
@@ -21,13 +20,11 @@ iplay_pal <- function() {
 
 #' print.palette
 #'
-#' @param x palette a structure of class palette
-#' @param ... additional arguments passed to text
+#' @param x A structure of class palette
+#' @param ... Additional arguments passed to text
 #'
 #' @importFrom graphics image par rect text
 #' @importFrom grDevices rgb
-#'
-#' @return
 #' @export
 #'
 #' @examples

@@ -23,12 +23,15 @@ An opinionated style to apply to tables that is APA 7th compliant.
 }
 \details{
 \itemize{
-\item For fonts beyond those installed in base R use \href{https://cran.r-project.org/web/packages/extrafont/README.html}{extrafont package}
+\item For fonts beyond those installed in base R use
+\href{https://cran.r-project.org/web/packages/extrafont/README.html}{extrafont package} # nolint
 \item Titles should be enumerated e.g. Table 1
 \item Subtitles should be brief and in sentence case
 }
 }
 \examples{
-\dontrun{gt(iris) \%>\% apa_style()}
+\dontrun{
+gt(iris) \%>\% apa_style()
+}
 }
 \keyword{style}

@@ -2,13 +2,13 @@
 % Please edit documentation in R/iplay_pal.R
 \name{iplay_pal}
 \alias{iplay_pal}
-\title{iplay_pal}
+\title{iPLAY Palette}
 \usage{
 iplay_pal()
 }
 \value{
-
+A list of colors for use in iPLAY
 }
 \description{
-iplay_pal
+iPLAY Palette
 }

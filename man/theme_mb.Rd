@@ -8,7 +8,7 @@ Loads an object for customising plots to an MnB theme}
 theme_mb()
 }
 \value{
-
+A ggplot2 theme object
 }
 \description{
 theme_mb
@@ -17,9 +17,9 @@ Loads an object for customising plots to an MnB theme
 \examples{
 \dontrun{
 original <- iris \%>\%
-ggplot(aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
- geom_smooth(method = "lm", se = F) +
- geom_jitter()
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
+  geom_smooth(method = "lm", se = F) +
+  geom_jitter()
 mnb_version <- original + theme_mnb()
 }
 }
