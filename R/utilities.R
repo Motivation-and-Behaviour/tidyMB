@@ -1,9 +1,11 @@
 
 #' open_notion
 #'
+#' Open the M&B Workflow Notion page in the browser.
+#'
 #' @importFrom utils browseURL
 #'
-#' @return
+#' @return Nothing
 #' @export
 
 open_notion <- function() {
@@ -12,7 +14,7 @@ open_notion <- function() {
 
 #' theme_mb
 #' Loads an object for customising plots to an MnB theme
-#' @return
+#' @return A ggplot2 theme object
 #' @export
 #'
 #' @importFrom ggthemes theme_fivethirtyeight

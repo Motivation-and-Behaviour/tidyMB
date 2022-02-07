@@ -12,8 +12,7 @@
 #'
 #' @details
 #' - For fonts beyond those installed in base R use
-#' [extrafont package]
-#' (https://cran.r-project.org/web/packages/extrafont/README.html)
+#' [extrafont package](https://cran.r-project.org/web/packages/extrafont/README.html) # nolint
 #' - Titles should be enumerated e.g. Table 1
 #' - Subtitles should be brief and in sentence case
 #'

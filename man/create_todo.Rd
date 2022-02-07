@@ -9,13 +9,16 @@ create_todo(rmd = NULL, path = NULL)
 \arguments{
 \item{rmd}{path to rmarkdown file to extract html comments from}
 
-\item{path}{output path. If null (default) the todo list is printed to console}
+\item{path}{output path. If null (default) the todo list is printed to
+console}
 }
 \description{
 Creates a todo list
 }
 \details{
-Reads all html comments from a rmarkdown file. Those with |TODO| will be extracted and sorted by assignment. Use @{name} e.g. '@james' to assign a task to someone.
+Reads all html comments from a rmarkdown file.
+Those with |TODO| will be extracted and sorted by assignment.
+Use @{name} e.g. '@james' to assign a task to someone.
 }
 \examples{
 library(tidyMB)

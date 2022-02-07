@@ -7,12 +7,9 @@
 \method{print}{palette}(x, ...)
 }
 \arguments{
-\item{x}{palette a structure of class palette}
+\item{x}{A structure of class palette}
 
-\item{...}{additional arguments passed to text}
-}
-\value{
-
+\item{...}{Additional arguments passed to text}
 }
 \description{
 print.palette
